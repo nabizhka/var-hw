@@ -1,15 +1,25 @@
-# Expected shortfall and subadditivity (MF731 HW 6)
+# VaR estimation for a stock portfolio (MF731 HW 5, sheet `05_var_est_hw1_pub`)
 
-1. N(0, 20^2): VaR.99 = 46.53m, ES.99 = 53.30m.
-2. 0/10 losses: VaR.98 0 + 0 < 10 (not subadditive); VaR.99 10 <= 20; ES.98 = 10, 10, 10.2.
-3. Loans: VaR.99 loan 2m, portfolio 5.8m > 4m (not subadditive); ES.99 6m and 7.8m.
-4. Weak monotonicity proved; the strict claim is false as stated (counterexample
-   L2 = U, L1 = U - |U - alpha|/2), true under a bounded gap or F2(VaR) > alpha.
-5. Exp: VaR = -theta ln(1 - alpha), ES = VaR + theta. Pareto: VaR = (1 - alpha)^(-xi),
-   ES = VaR / (1 - xi) for xi < 1, infinite for xi >= 1.
+One-day 95% VaR of a $1M cap-weighted MSFT/AAPL/GOOGL portfolio, empirical vs
+normal-EWMA, full/linear/quadratic losses. Empirical full 21,043; normal-EWMA full
+16,610 (linear exact 16,869).
+
+## Run
 
 ```bash
 pip install -r requirements.txt
-python src/es_check.py     # writes generated/checks.tex
+python src/main.py        # writes figures/ and generated/
 latexmk -pdf main.tex
+```
+
+Prices are Yahoo Finance closes downloaded 2026-10-12 and frozen in `data/`.
+
+## Layout
+
+```
+src/common.py      data loading, empirical VaR / ES estimators
+src/estimation.py  weights, loss operators, EWMA, VaR estimates
+src/main.py        runs it, figure, generated/values.tex
+PSEUDOCODE.md      pseudocode
+DEFENSE.md         notes for questions (not for submission)
 ```
