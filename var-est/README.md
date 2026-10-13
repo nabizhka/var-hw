@@ -1,25 +1,15 @@
-# Backtesting VaR on the S&P 500 (MF731 HW 5, sheet `05_var_backtest_hw_pub`)
+# Expected shortfall and subadditivity (MF731 HW 6)
 
-Rolling one-day 95% VaR for a constant $1 S&P 500 position, M = 1010, J = 1504 test
-days. Exceedances: empirical 55, EWMA 94, 95% CI (58.63, 91.77). Both rejected, in
-opposite directions.
-
-## Run
+1. N(0, 20^2): VaR.99 = 46.53m, ES.99 = 53.30m.
+2. 0/10 losses: VaR.98 0 + 0 < 10 (not subadditive); VaR.99 10 <= 20; ES.98 = 10, 10, 10.2.
+3. Loans: VaR.99 loan 2m, portfolio 5.8m > 4m (not subadditive); ES.99 6m and 7.8m.
+4. Weak monotonicity proved; the strict claim is false as stated (counterexample
+   L2 = U, L1 = U - |U - alpha|/2), true under a bounded gap or F2(VaR) > alpha.
+5. Exp: VaR = -theta ln(1 - alpha), ES = VaR + theta. Pareto: VaR = (1 - alpha)^(-xi),
+   ES = VaR / (1 - xi) for xi < 1, infinite for xi >= 1.
 
 ```bash
 pip install -r requirements.txt
-python src/main.py        # writes figures/ and generated/
+python src/es_check.py     # writes generated/checks.tex
 latexmk -pdf main.tex
-```
-
-Prices are Yahoo Finance closes downloaded 2026-10-12 and frozen in `data/`.
-
-## Layout
-
-```
-src/common.py    data loading, empirical VaR estimator
-src/backtest.py  rolling empirical + EWMA VaR, exceedances, CI
-src/main.py      runs it, figure, tables, generated/values.tex
-PSEUDOCODE.md      pseudocode
-DEFENSE.md         notes for questions (not for submission)
 ```

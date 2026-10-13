@@ -1,5 +1,2 @@
 numpy
 scipy
-pandas
-matplotlib
-yfinance  # only to re-download; data/ is frozen
